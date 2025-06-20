@@ -18,15 +18,24 @@ const sesClient = new SESv2Client({
 
 // Renderizar template Handlebars
 function renderTemplate(templateName, data) {
-  const templatePath = path.join(__dirname, 'templates', `${templateName}.hbs`);
-  const source = fs.readFileSync(templatePath, 'utf8');
-  const template = handlebars.compile(source);
-  return template(data);
+  try {
+    const templatePath = path.join(__dirname, 'templates', `${templateName}.hbs`);
+    const source = fs.readFileSync(templatePath, 'utf8');
+    const template = handlebars.compile(source);
+    return template(data);
+  } catch (error) {
+    console.error('Erro ao renderizar template:', error);
+    throw new Error('Erro ao renderizar o template do email');
+  }
 }
 
 // Endpoint que envia o email via SES diretamente (sem Nodemailer!)
 app.post('/send-email', async (req, res) => {
   const { to, subject, templateData } = req.body;
+
+  if (!to || !subject || !templateData) {
+    return res.status(400).json({ success: false, error: 'Parâmetros faltando (to, subject, templateData)' });
+  }
 
   try {
     const html = renderTemplate('email', templateData);
@@ -54,7 +63,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
