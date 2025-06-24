@@ -82,7 +82,7 @@ app.post('/schedule-meeting', async (req, res) => {
   // If no date/time, set to Gold Coast now + 30 seconds
   if (!date || !time) {
     const now = new Date();
-    const gcTimestamp = now.getTime() + 30 * 1000;
+    const gcTimestamp = now.getTime() + 70 * 1000;
     const gcDate = new Date(gcTimestamp);
 
     // Get Gold Coast date/time parts
