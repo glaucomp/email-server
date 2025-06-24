@@ -112,7 +112,7 @@ cron.schedule('* * * * *', async () => {
       await axios.post('https://api.bland.ai/v1/calls', {
         phone_number: meeting.phone,
         task: "You are calling " + meeting.name + ". to understand his " + meeting.issue + " and how they can get the goals business " + meeting.goals + ".",
-        voice_id: "999c3b96-670d-4403-898a-bd62ec6eb27b",
+        voice_id: "1c1ca816-f457-4dde-a12a-eaf19fb0b523",
         personalityTraits: {
           core: [
             "Empathetic",
