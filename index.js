@@ -81,21 +81,18 @@ app.post('/schedule-meeting', async (req, res) => {
 
   // If no date/time, set to Gold Coast now + 30 seconds
   if (!date || !time) {
-    // Get Gold Coast time 30 seconds in the future
     const now = new Date();
-    // Convert to ms, add 30s, then get Gold Coast time
     const gcTimestamp = now.getTime() + 30 * 1000;
+    const gcDate = new Date(gcTimestamp);
 
-    // Format date
-    const goldCoastDateObj = new Date(gcTimestamp);
-
-    date = goldCoastDateObj.toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane' });
-    time = goldCoastDateObj.toLocaleTimeString('en-AU', {
-      timeZone: 'Australia/Brisbane',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    // Get Gold Coast date/time parts
+    const options = { timeZone: 'Australia/Brisbane', hour12: false };
+    // YYYY-MM-DD
+    const [day, month, year] = gcDate.toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane' }).split('/');
+    date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    // HH:MM (24hr, no seconds)
+    const [hour, minute] = gcDate.toLocaleTimeString('en-AU', { ...options }).split(':');
+    time = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
   }
 
   try {
