@@ -151,9 +151,9 @@ app.post('/schedule-meeting', async (req, res) => {
         headers: { 'authorization': 'org_59adf6eb9c336d5be2ccda75d51bcefd6a922df6d64331944a6461d65212163ae252eb919984110be7e969' }
       });
 
-      return res.json({ success: true, message: 'Ligação feita imediatamente!' });
+      return res.json({ success: true, message: 'Calling now!' });
     } catch (err) {
-      console.error('Erro ao ligar imediatamente:', err);
+      console.error('Error to call:', err);
       return res.status(500).json({ success: false, error: err.message });
     }
   }
