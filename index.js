@@ -147,6 +147,8 @@ app.post('/schedule-meeting', async (req, res) => {
           "Do not share confidential information or make promises you cannot keep",
           "Be helpful and professional at all times",
         ],
+        reduce_latency: true,
+        ivr_mode: true,
       }, {
         headers: { 'authorization': 'org_59adf6eb9c336d5be2ccda75d51bcefd6a922df6d64331944a6461d65212163ae252eb919984110be7e969' }
       });
@@ -254,7 +256,8 @@ cron.schedule('* * * * *', async () => {
           "Do not share confidential information or make promises you cannot keep",
           "Be helpful and professional at all times",
         ],
-
+        reduce_latency: true,
+        ivr_mode: true,
 
       }, {
         headers: { 'authorization': 'org_59adf6eb9c336d5be2ccda75d51bcefd6a922df6d64331944a6461d65212163ae252eb919984110be7e969' }
