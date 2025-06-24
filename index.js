@@ -73,10 +73,29 @@ app.post('/send-email', async (req, res) => {
 });
 
 app.post('/schedule-meeting', async (req, res) => {
-  const { name, email, phone, issue, goals, date, time } = req.body;
+  let { name, email, phone, issue, goals, date, time } = req.body;
 
-  if (!name || !email || !phone || !issue || !goals || !date || !time) {
+  if (!name || !email || !phone || !issue || !goals) {
     return res.status(400).json({ success: false, error: 'Dados incompletos!' });
+  }
+
+  // If no date/time, set to Gold Coast now + 30 seconds
+  if (!date || !time) {
+    // Get Gold Coast time 30 seconds in the future
+    const now = new Date();
+    // Convert to ms, add 30s, then get Gold Coast time
+    const gcTimestamp = now.getTime() + 30 * 1000;
+
+    // Format date
+    const goldCoastDateObj = new Date(gcTimestamp);
+
+    date = goldCoastDateObj.toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane' });
+    time = goldCoastDateObj.toLocaleTimeString('en-AU', {
+      timeZone: 'Australia/Brisbane',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
   }
 
   try {
