@@ -75,7 +75,7 @@ app.post('/send-email', async (req, res) => {
 app.post('/schedule-meeting', async (req, res) => {
   let { name, email, phone, issue, goals, date, time } = req.body;
 
-  if (!name || !email || !phone || !issue || !goals) {
+  if (!name || !phone || !issue || !goals) {
     return res.status(400).json({ success: false, error: 'Dados incompletos!' });
   }
 
