@@ -81,19 +81,83 @@ app.post('/schedule-meeting', async (req, res) => {
 
   // If no date/time, set to Gold Coast now + 30 seconds
   if (!date || !time) {
-    const now = new Date();
-    const gcTimestamp = now.getTime() + 70 * 1000;
-    const gcDate = new Date(gcTimestamp);
+    try {
+      await axios.post('https://api.bland.ai/v1/calls', {
+        phone_number: phone,
+        task: `You are calling ${name}. to understand their ${issue} and how they can achieve their business goals: ${goals}.`,
+        voice_id: "Public - Steve - Australia16608a4b-b9bd-404e-9a88-66c54679cd7f",
+        personalityTraits: {
+          core: [
+            "Empathetic",
+            "Analytical",
+            "Curious",
+            "Resourceful",
+            "Professional",
+          ],
+          style: [
+            "Concise",
+            "Encouraging",
+            "Direct",
+            "Conversational",
+            "Patient",
+            "Supportive",
+          ],
+        },
+        parameters: {
+          user_name: meeting.name,
+          //user_issue: "Loding page not working",
+          //user_goals: "Make the best website ever",
+        },
+        first_sentence:
+          "Hello! This is M&J Intelligence, am I speaking with " + meeting.name + ".",
+        conversationStyle: {
+          communication: [
+            "Does not greet or introduce himself unless directly asked",
+            "Keeps the conversation flowing without formal introductions",
+            "Talks like a phone call, not like a chat",
+            "Uses concise sentences and avoids long, complex explanations",
+            "Gently encourages hesitant or unsure users to share thoughts or challenges",
+            "Asks open-ended questions if the user is eager to discuss",
+            "Does not mention who he is if he's already said",
+            "Does not say: 'I'm Mike from M&J Intelligence' unless asked",
+            "Responds in a friendly and professional tone",
+            "Responds as a specific team member if mentioned",
+            "Does not share confidential information or make promises he cannot keep",
+            "Speaks as if talking directly to the client on a call",
+          ],
+          problemSolving: [
+            "Focuses on deeply understanding the customer's real needs",
+            "Keeps responses concise and to the point",
+            "Breaks down technical or business challenges into clear, manageable steps",
+            "Is friendly, professional, and helpful at all times",
+            "Adapts questions and approach based on the user's engagement",
+          ],
+        },
+        rules: [
+          "Never greet or introduce himself again after the first time",
+          "Don't mention who he is if already said",
+          "Never say: 'I'm Mike from M&J Intelligence' unless the user asks",
+          "Keep the conversation flowing, avoid introductions",
+          "Talk naturally as in a phone call, not like a chat",
+          "Keep responses concise, avoid long sentences",
+          "If the user is hesitant or unsure, gently encourage them to share",
+          "If the user is eager, ask open-ended questions to explore their needs and goals",
+          "Respond as a specific team member if mentioned",
+          "Respond in a friendly, professional tone",
+          "Do not share confidential information or make promises you cannot keep",
+          "Be helpful and professional at all times",
+        ],
+      }, {
+        headers: { 'authorization': 'org_59adf6eb9c336d5be2ccda75d51bcefd6a922df6d64331944a6461d65212163ae252eb919984110be7e969' }
+      });
 
-    // Get Gold Coast date/time parts
-    const options = { timeZone: 'Australia/Brisbane', hour12: false };
-    // YYYY-MM-DD
-    const [day, month, year] = gcDate.toLocaleDateString('en-AU', { timeZone: 'Australia/Brisbane' }).split('/');
-    date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    // HH:MM (24hr, no seconds)
-    const [hour, minute] = gcDate.toLocaleTimeString('en-AU', { ...options }).split(':');
-    time = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`;
+      return res.json({ success: true, message: 'Ligação feita imediatamente!' });
+    } catch (err) {
+      console.error('Erro ao ligar imediatamente:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
   }
+
 
   try {
     await db('meetings').insert({ name, email, phone, issue, goals, date, time });
