@@ -15,11 +15,13 @@ async function createMeetingsTable() {
       table.string('name');
       table.string('email');
       table.string('phone');
+      table.string('issue');
+      table.string('goals');
       table.string('date');
       table.string('time');
       table.timestamp('created_at').defaultTo(knex.fn.now());
     });
-    console.log('✅ Tabela "meetings" criada com sucesso!');
+    console.log('✅ Table "meetings" created!');
   }
 }
 

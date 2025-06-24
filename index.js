@@ -73,14 +73,14 @@ app.post('/send-email', async (req, res) => {
 });
 
 app.post('/schedule-meeting', async (req, res) => {
-  const { name, email, phone, date, time } = req.body;
+  const { name, email, phone, issue, goals, date, time } = req.body;
 
-  if (!name || !email || !phone || !date || !time) {
+  if (!name || !email || !phone || !issue || !goals || !date || !time) {
     return res.status(400).json({ success: false, error: 'Dados incompletos!' });
   }
 
   try {
-    await db('meetings').insert({ name, email, phone, date, time });
+    await db('meetings').insert({ name, email, phone, issue, goals, date, time });
 
     res.json({ success: true, message: 'Reunião agendada com sucesso!' });
   } catch (err) {
@@ -111,7 +111,7 @@ cron.schedule('* * * * *', async () => {
     for (const meeting of meetings) {
       await axios.post('https://api.bland.ai/v1/calls', {
         phone_number: meeting.phone,
-        task: "You are calling " + meeting.name + ". to understand his issues and goals business.",
+        task: "You are calling " + meeting.name + ". to understand his " + meeting.issue + " and how they can get the goals business " + meeting.goals + ".",
 
         personalityTraits: {
           core: [
@@ -136,7 +136,7 @@ cron.schedule('* * * * *', async () => {
           user_goals: "Make the best website ever",
         },
         first_sentence:
-          "Hello! " + meeting.name + ".How are you today?",
+          "Hello! " + meeting.name + ". How are you today?",
         conversationStyle: {
           communication: [
             "Does not greet or introduce himself unless directly asked",
