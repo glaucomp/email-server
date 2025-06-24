@@ -112,7 +112,6 @@ cron.schedule('* * * * *', async () => {
       await axios.post('https://api.bland.ai/v1/calls', {
         phone_number: meeting.phone,
         task: "You are calling " + meeting.name + ". to understand his " + meeting.issue + " and how they can get the goals business " + meeting.goals + ".",
-
         personalityTraits: {
           core: [
             "Empathetic",
@@ -136,7 +135,7 @@ cron.schedule('* * * * *', async () => {
           user_goals: "Make the best website ever",
         },
         first_sentence:
-          "Hello! " + meeting.name + ". How are you today?",
+          "Hello! This is M&J Intelligence, am I speaking with " + meeting.name + ".",
         conversationStyle: {
           communication: [
             "Does not greet or introduce himself unless directly asked",
