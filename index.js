@@ -104,12 +104,12 @@ app.post('/schedule-meeting', async (req, res) => {
           ],
         },
         parameters: {
-          user_name: meeting.name,
+          user_name: name,
           //user_issue: "Loding page not working",
           //user_goals: "Make the best website ever",
         },
         first_sentence:
-          "Hello! This is M&J Intelligence, am I speaking with " + meeting.name + ".",
+          "Hello! This is M&J Intelligence, am I speaking with " + name + ".",
         conversationStyle: {
           communication: [
             "Does not greet or introduce himself unless directly asked",
