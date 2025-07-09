@@ -9,13 +9,13 @@ const cron = require('node-cron');
 const axios = require('axios');
 const { coreArray, styleArray, communicationArray, problemSolvingArray, rulesArray, taskString, firstSentenceString,
   firstSentenceStringAgent } = require('./datas');
-const cors = require('cors');
+//const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
 
 const sesClient = new SESv2Client({
   region: process.env.AWS_REGION,
