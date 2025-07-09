@@ -169,8 +169,8 @@ app.post('/meeting-agent', async (req, res) => {
   const axiosResponse = await axios.post('https://api.bland.ai/v1/calls', {
     phone_number: phone,
     //task: task,
-    request_data: { "user_phone_number": phone, "user_phone_number": existing.email, "agent_name": agent.name, "user_name": user_name },
-    variables: { "user_phone_number": phone, "user_phone_number": existing.email, "agent_name": agent.name, "user_name": user_name },
+    request_data: { "user_phone_number": phone, "user_email": existing.email, "agent_name": agent.name, "user_name": user_name },
+    variables: { "user_phone_number": phone, "user_email": existing.email, "agent_name": agent.name, "user_name": user_name },
     background_track: "office",
     pathway_id: pathway_call_id,
     voice: agent.voice_id,
