@@ -155,7 +155,7 @@ app.post('/schedule-meeting', async (req, res) => {
 });
 
 app.post('/meeting-agent', async (req, res) => {
-  let { id, pathway_call_id, phone, agent, call_id, user_name } = req.body;
+  let { id, pathway_call_id, phone, agent, call_id, user_name, } = req.body;
 
   if (!phone || !agent) {
     return res.status(400).json({ success: false, error: 'Missing data' });
@@ -174,7 +174,7 @@ app.post('/meeting-agent', async (req, res) => {
   const axiosResponse = await axios.post('https://api.bland.ai/v1/calls', {
     phone_number: phone,
     //task: task,
-    request_data: { "user_phone_number": phone, "user_email": existing.email, "agent_name": agent.name, "user_name": user_name },
+    request_data: { "user_phone_number": phone, "user_email": context?.variables?.user_name, "agent_name": agent.name, "user_name": user_name },
     background_track: "office",
     pathway_id: pathway_call_id,
     voice: agent.voice_id,
