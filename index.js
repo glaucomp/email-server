@@ -166,7 +166,7 @@ app.post('/meeting-agent', async (req, res) => {
   console.log('variable ', existing?.context ? JSON.parse(existing.context).variables : {});
   console.log("DEBUG request_data:", {
     "user_phone_number": phone,
-    "user_email": existing.email,
+    "user_email": existing.context?.variables?.user_name,
     "agent_name": agent.name,
     "user_name": user_name,
   });
