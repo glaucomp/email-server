@@ -164,7 +164,12 @@ app.post('/meeting-agent', async (req, res) => {
   const existing = await db('user_progress').where({ call_id }).first();
   console.log('existing ', existing);
   console.log('variable ', existing?.context ? JSON.parse(existing.context).variables : {});
-
+  console.log("DEBUG request_data:", {
+    "user_phone_number": phone,
+    "user_email": existing.email,
+    "agent_name": agent.name,
+    "user_name": user_name,
+  });
 
   const axiosResponse = await axios.post('https://api.bland.ai/v1/calls', {
     phone_number: phone,
